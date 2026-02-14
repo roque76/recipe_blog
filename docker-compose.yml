@@ -25,7 +25,7 @@ services:
     networks:
       - recipe_blog_network
   
-  postgress:
+  postgres:
     image: postgres:16
     environment: 
       POSTGRES_DB: ${DB_DATABASE}
