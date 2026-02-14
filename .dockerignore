@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Git
+.git/
+.gitignore
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Laravel specific
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Development tools
+.editorconfig
+.phpunit.result.cache
+phpunit.xml
+
+# Frontend build artifacts
+public/hot
+public/build/
+
+# OS garbage
+.DS_Store
+Thumbs.db
