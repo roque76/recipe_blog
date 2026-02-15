@@ -1,4 +1,3 @@
-#Dockerfile
 FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www
@@ -19,6 +18,9 @@ RUN npm install && npm run build
 
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-EXPOSE 8000
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+EXPOSE 8000 5173
+
+CMD ["/start.sh"]

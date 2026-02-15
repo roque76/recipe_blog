@@ -1,16 +1,14 @@
-#docker-compose.yml
-
 services:
   app:
     build: .
     ports:
       - "8000:8000"
+      - "5173:5173"
     volumes:
       - .:/var/www
       - /var/www/vendor
-      - /var/www/node_modules
-
-    environment: 
+      - node_modules:/var/www/node_modules
+    environment:
       APP_ENV: local
       APP_URL: http://localhost:8000
       DB_CONNECTION: pgsql
@@ -19,15 +17,16 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      WAYFINDER_ENABLED: "true"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - recipe_blog_network
-  
+
   postgres:
     image: postgres:16
-    environment: 
+    environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -36,29 +35,17 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${DB_USERNAME} -d $${DB_DATABASE}"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - recipe_blog_network
-  
-  node:
-    image: node:20-alpine
-    working_dir: /var/www
-    depends_on:
-      - app
-    volumes:
-      - .:/var/www
-      - /var/www/node_modules
-    command: npm run dev
-    ports:
-      - "5173:5173"
     networks:
       - recipe_blog_network
 
 networks:
   recipe_blog_network:
     driver: bridge
+
 volumes:
   pg_data:
+  node_modules:

@@ -6,7 +6,7 @@ import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '')
-    
+
     return {
         plugins: [
             laravel({
@@ -22,10 +22,19 @@ export default defineConfig(({ mode }) => {
             tailwindcss(),
             wayfinder({
                 phpBinary: 'C:/Users/JOHN/.config/herd/bin/php.exe',
+                enabled: process.env.WAYFINDER_ENABLED === 'true',
             }),
         ],
         esbuild: {
             jsx: 'automatic',
+        },
+
+        server: {
+            host: '0.0.0.0',
+            port: 5173,
+            hmr: {
+                host: 'localhost',
+            },
         },
     }
 })
